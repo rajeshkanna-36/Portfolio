@@ -226,3 +226,29 @@ h6 {
   filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
   letter-spacing: -0.02em;
 }
+/* Liquid Animations */
+@keyframes blob-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.9); }
+  75% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes liquid-morph {
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+.active-blob {
+  animation: liquid-morph 3s ease-in-out infinite;
+}
+
+.nav-click-active {
+  animation: blob-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.animate-liquid-morph {
+    animation: liquid-morph 6s ease-in-out infinite;
+}
+

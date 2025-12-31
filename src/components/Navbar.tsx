@@ -36,25 +36,7 @@ const Navbar = () => {
 
                     {/* Center: Desktop Menu */}
                     <div className="hidden md:flex justify-center flex-1">
-                        <style>{`
-                            @keyframes blob-bounce {
-                                0% { transform: scale(1); }
-                                50% { transform: scale(0.9); }
-                                75% { transform: scale(1.1); }
-                                100% { transform: scale(1); }
-                            }
-                            @keyframes liquid-morph {
-                                0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-                                50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-                                100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-                            }
-                            .active-blob {
-                                animation: liquid-morph 3s ease-in-out infinite;
-                            }
-                            .nav-click-active {
-                                animation: blob-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                            }
-                        `}</style>
+
                         <div className="flex items-center space-x-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1.5 shadow-2xl relative">
                             {/* Animated Background Blob for Active State */}
 
@@ -121,12 +103,13 @@ const Navbar = () => {
                             </svg>
                         </a>
 
-                        <div className="md:hidden">
+                        <div className="md:hidden relative">
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="inline-flex items-center justify-center p-2 rounded-lg text-slate-300 hover:text-white focus:outline-none glass-btn"
+                                className={`relative inline-flex items-center justify-center p-2 text-white focus:outline-none transition-all duration-300 ${isOpen ? 'scale-110' : 'scale-100'}`}
                             >
-                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <div className={`absolute inset-0 bg-blue-500/20 backdrop-blur-md border border-white/10 animate-liquid-morph transition-all duration-500 ${isOpen ? 'bg-blue-600/30' : ''}`}></div>
+                                <svg className="relative h-6 w-6 z-10" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     {isOpen ? (
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                     ) : (
@@ -141,21 +124,29 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {isOpen && (
-                <div className="md:hidden bg-slate-900/95 backdrop-blur-xl border-t border-white/10 absolute w-full animate-fade-in-up">
-                    <div className="px-4 pt-4 pb-6 space-y-2">
-                        {links.map((link) => (
-                            <Link
-                                key={link.name}
-                                to={link.path}
-                                onClick={() => setIsOpen(false)}
-                                className={`block px-4 py-3 rounded-xl text-lg font-karla font-medium transition-all ${isActive(link.path)
-                                    ? 'text-white bg-blue-600 shadow-lg shadow-blue-900/20'
-                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                                    }`}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
+                <div className="md:hidden absolute w-full top-24 left-0 px-4 pb-6">
+                    <div className="glass-panel rounded-3xl overflow-hidden animate-fade-in-up border border-white/10 bg-slate-900/60 backdrop-blur-xl">
+                        <div className="px-4 py-6 space-y-3">
+                            {links.map((link) => (
+                                <Link
+                                    key={link.name}
+                                    to={link.path}
+                                    onClick={() => setIsOpen(false)}
+                                    className={`relative block px-6 py-4 text-lg font-karla font-bold transition-all duration-300 group ${isActive(link.path)
+                                        ? 'text-white'
+                                        : 'text-slate-300 hover:text-white hover:bg-white/10 rounded-2xl'
+                                        }`}
+                                >
+                                    <span className="relative z-10 flex items-center justify-between">
+                                        {link.name}
+                                        {isActive(link.path) && <span className="w-2 h-2 bg-white rounded-full animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.8)]"></span>}
+                                    </span>
+                                    {isActive(link.path) && (
+                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-80 animate-liquid-morph shadow-lg shadow-blue-500/30 backdrop-blur-sm -z-0"></div>
+                                    )}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
