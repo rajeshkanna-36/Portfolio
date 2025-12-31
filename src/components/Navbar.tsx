@@ -142,7 +142,7 @@ const Navbar = () => {
                                         {isActive(link.path) && <span className="w-2 h-2 bg-white rounded-full animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.8)]"></span>}
                                     </span>
                                     {isActive(link.path) && (
-                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-80 animate-liquid-morph shadow-lg shadow-blue-500/30 backdrop-blur-sm -z-0"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-80 rounded-2xl shadow-lg shadow-blue-500/30 backdrop-blur-sm -z-0"></div>
                                     )}
                                 </Link>
                             ))}
