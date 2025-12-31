@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60" fill="none">
+  <defs>
+    <linearGradient id="logo-gradient" x1="0" y1="0" x2="100" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+  </defs>
+  
+  <!-- R -->
+  <path d="M10 50 V10 H30 C42 10 42 30 30 30 H20" stroke="url(#logo-gradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 30 L35 50" stroke="url(#logo-gradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- K (sharing leg style) -->
+  <path d="M50 10 V50" stroke="url(#logo-gradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M75 10 L50 35 L75 50" stroke="url(#logo-gradient)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Decorative Dot -->
+  <circle cx="88" cy="48" r="4" fill="url(#logo-gradient)" />
+</svg>
