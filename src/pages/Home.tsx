@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import SocialLinks from '../components/SocialLinks';
 
 const Home = () => {
@@ -32,9 +33,9 @@ const Home = () => {
                         <a href="https://drive.google.com/file/d/11aE-a2Jd96tMgOc3B-FtHHwrXaDNJjQj/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="px-8 py-3 glass-btn text-white font-karla font-bold rounded-full group">
                             <span>Resume</span>
                         </a>
-                        <a href="/projects" className="px-8 py-3 glass-btn text-blue-400 font-karla font-bold rounded-full group">
+                        <Link to="/projects" className="px-8 py-3 glass-btn text-blue-400 font-karla font-bold rounded-full group">
                             <span>View Projects</span>
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
