@@ -1,29 +1,9 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
-
-const useTypewriter = (text: string, speed = 50) => {
-    const [displayText, setDisplayText] = useState('');
-
-    useEffect(() => {
-        let i = 0;
-        const timer = setInterval(() => {
-            if (i < text.length) {
-                setDisplayText((prev) => prev + text.charAt(i));
-                i++;
-            } else {
-                clearInterval(timer);
-            }
-        }, speed);
-
-        return () => clearInterval(timer);
-    }, [text, speed]);
-
-    return displayText;
-};
 
 const About = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const typedText = useTypewriter("Entry-level Java Developer", 100);
+    const typedText = "Software Engineer";
 
     return (
         <div ref={containerRef} className="h-screen bg-slate-950 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/40 via-slate-950 to-slate-950 text-gray-900 dark:text-gray-100 relative md:overflow-hidden flex flex-col pt-24 pb-8 md:pb-12 px-4 overflow-y-auto md:overflow-y-hidden">

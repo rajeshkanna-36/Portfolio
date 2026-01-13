@@ -18,10 +18,10 @@ const Home = () => {
                         Hi, I'm <span className="text-blue-400">Rajesh Kanna</span> <span className="inline-block animate-wave origin-bottom-right">👋</span>
                     </h1>
                     <h2 className="text-2xl md:text-4xl font-medium text-slate-300 font-source mb-6">
-                        I build things for the web.
+                        I design things for the web.
                     </h2>
                     <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-source leading-relaxed mb-8 text-center">
-                        I'm a software engineer specializing in building (and occasionally designing) exceptional digital experiences. Currently, I'm focused on building accessible, human-centered products.
+                        I'm a UI UX Designer specializing in building (and occasionally designing) exceptional digital experiences. Currently, I'm focused on designing accessible, human-centered products.
                     </p>
 
                     <div className="flex justify-center space-x-6 mb-12">
@@ -29,7 +29,7 @@ const Home = () => {
                     </div>
 
                     <div className="flex justify-center gap-4">
-                        <a href="https://drive.google.com/file/d/1aFO7kuoPXjjBZcVxjsE4YVZLMk2oeSij/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="px-8 py-3 glass-btn text-white font-karla font-bold rounded-full group">
+                        <a href="https://drive.google.com/file/d/11aE-a2Jd96tMgOc3B-FtHHwrXaDNJjQj/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="px-8 py-3 glass-btn text-white font-karla font-bold rounded-full group">
                             <span>Resume</span>
                         </a>
                         <a href="/projects" className="px-8 py-3 glass-btn text-blue-400 font-karla font-bold rounded-full group">
