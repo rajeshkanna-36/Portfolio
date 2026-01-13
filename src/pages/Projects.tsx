@@ -1,48 +1,42 @@
 
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import project1 from '../assets/project1.png';
+import project2 from '../assets/project2.png';
+import project3 from '../assets/project3.png';
 
 const projects = [
     {
         id: 1,
-        title: 'Healio',
-        category: 'Medical • Mobile App',
-        description: 'A Patient-Centered App With Simple Navigation And Calming Visuals Focused On Healthcare Accessibility.',
+        title: 'Brand Landing page',
+        category: 'Tech • Web Design',
+        description: 'A modern, high-conversion landing page designed for a tech brand, featuring dynamic interactions and a premium aesthetic.',
         year: '2025',
-        link: '/demos/weather',
+        link: 'https://www.figma.com/proto/R1YF9zrvpyDoIA7u7RYexb/KodeX-Web-Design?node-id=104-2&t=Bas4TS4aCwqSRh17-1',
         color: 'from-blue-400 to-cyan-300',
-        image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+        image: project1,
     },
     {
         id: 2,
-        title: 'Fintech Flow',
-        category: 'Finance • Web Platform',
-        description: 'Comprehensive financial dashboard visualizing complex data streams with intuitive, real-time graphing solutions.',
+        title: 'Swayam App Redesign',
+        category: 'Tech • Mobile Application',
+        description: 'A comprehensive redesign of the Swayam educational platform to enhance user experience and accessibility for learners nationwide.',
         year: '2024',
-        link: '/demos/calculator',
+        link: 'https://www.figma.com/proto/wPk0H1HLvb9n0REKpGxcMw/Swayam?node-id=16-39&t=Bas4TS4aCwqSRh17-1',
         color: 'from-emerald-400 to-teal-300',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+        image: project2,
     },
     {
         id: 3,
-        title: 'Luxe E-Comm',
+        title: 'Automobile brand shop',
         category: 'E-commerce • Web App',
         description: 'A premium shopping experience featuring immersive product displays and a seamless, high-conversion checkout flow.',
-        year: '2024',
-        link: '/',
+        year: '2025',
+        link: 'https://atuomobile-brand-shop.web.app/Login',
         color: 'from-purple-400 to-pink-300',
-        image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
+        image: project3,
     },
-    {
-        id: 4,
-        title: 'Portfolio V1',
-        category: 'Personal • Website',
-        description: 'The first iteration of my personal portfolio, showcasing early concepts and experimental layout designs.',
-        year: '2023',
-        link: '/',
-        color: 'from-orange-400 to-amber-300',
-        image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-    },
+
 ];
 
 const Projects = () => {
@@ -165,13 +159,25 @@ const Projects = () => {
                                             </p>
                                         </div>
 
-                                        <Link
-                                            to={project.link}
-                                            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold hover:scale-105 transition-transform duration-300"
-                                        >
-                                            VIEW CASE STUDY
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                        </Link>
+                                        {project.link.startsWith('http') ? (
+                                            <a
+                                                href={project.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold hover:scale-105 transition-transform duration-300"
+                                            >
+                                                VIEW PROJECT
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                to={project.link}
+                                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold hover:scale-105 transition-transform duration-300"
+                                            >
+                                                VIEW PROJECT
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                                            </Link>
+                                        )}
                                     </div>
 
                                     <div className="relative h-[300px] lg:h-[400px] w-full rounded-2xl overflow-hidden shadow-inner group-hover:shadow-2xl transition-all duration-500">
