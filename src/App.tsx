@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Loader from './components/Loader';
+import HelloLoader from './components/HelloLoader';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import About from './pages/About';
@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <Loader onComplete={() => setLoading(false)} />
+      <HelloLoader onComplete={() => setLoading(false)} />
       {!loading && (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-opacity duration-700 ease-in opacity-100">
           <Navbar />

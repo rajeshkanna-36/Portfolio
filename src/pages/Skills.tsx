@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
+import BrainNetwork from '../components/BrainNetwork';
 
 const skills = [
     {
@@ -9,8 +10,7 @@ const skills = [
             'Node.js', 'Express', 'Python', 'PostgreSQL', 'MongoDB', 'GraphQL',
             'Git', 'Docker', 'AWS', 'CI/CD'
         ],
-        color: 'from-blue-400 to-cyan-300',
-        delay: '0ms'
+        theme: 'blue'
     },
     {
         category: 'UI/UX Design',
@@ -20,75 +20,60 @@ const skills = [
             'Interaction Design', 'Visual Hierarchy', 'Color Theory', 'Typography',
             'Responsive Design', 'Accessibility', 'Motion Design'
         ],
-        color: 'from-purple-400 to-pink-300',
-        delay: '200ms'
+        theme: 'purple'
     }
 ];
 
 const Skills = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        // Optional: Add simple entrance animations if desired
-    }, []);
+    const allSkills = skills.flatMap(group =>
+        group.items.map(item => ({
+            name: item,
+            category: group.category
+        }))
+    );
 
     return (
-        <div ref={containerRef} className="min-h-screen md:h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-900/40 via-slate-950 to-slate-950 text-gray-900 dark:text-gray-100 p-4 pt-24 pb-8 md:pb-12 relative overflow-y-auto md:overflow-hidden flex flex-col">
-            {/* Large Grid Background */}
-            <div className="absolute inset-0 z-0 opacity-20 pointer-events-none"
-                style={{
-                    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
-                    backgroundSize: '100px 100px'
-                }}>
+        <div ref={containerRef} className="h-screen bg-black text-white p-4 pt-16 md:pt-20 pb-4 relative overflow-hidden flex flex-col font-outfit uppercase tracking-tight">
+            {/* Cinematic "Glowing X" Background */}
+            <div className="absolute inset-0 pointer-events-none select-none z-0">
+                {/* Diagonal Laser 1: Blue (Top-Left to Bottom-Right) */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-[150%] h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent rotate-45 opacity-60 shadow-[0_0_20px_#3b82f6] blur-[1px]" />
+                    <div className="absolute w-[150%] h-[80px] bg-blue-500/10 rotate-45 blur-[50px] opacity-40" />
+                </div>
+
+                {/* Diagonal Laser 2: Green (Top-Right to Bottom-Left) */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-[150%] h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent -rotate-45 opacity-60 shadow-[0_0_20px_#10b981] blur-[1px]" />
+                    <div className="absolute w-[150%] h-[80px] bg-emerald-500/10 -rotate-45 blur-[50px] opacity-40" />
+                </div>
+
+                {/* Central Intersection Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                    {/* The "Diamond" Core */}
+                    <div className="w-16 h-16 bg-white rotate-45 blur-[2px] shadow-[0_0_60px_white] opacity-90 animate-pulse" />
+                    {/* Outer Radial Bloom */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/20 rounded-full blur-[60px]" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]" />
+                </div>
+
+                {/* Ambient Atmospheric Glows */}
+                <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]" />
+                <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[120px]" />
             </div>
 
-            <div className="max-w-7xl mx-auto w-full flex-grow flex flex-col relative z-10 min-h-0">
-                <div className="text-center mb-4 flex-shrink-0 animate-fade-in-up">
-                    <h2 className="text-blue-500 font-bold tracking-wider uppercase mb-2 text-sm font-mono">My Arsenal</h2>
-                    <h1 className="text-4xl md:text-5xl font-bold font-karla text-gray-900 dark:text-white mb-6">
-                        Core <span className="italic font-serif text-blue-600 dark:text-blue-400">Competencies</span>
+            <div className="max-w-7xl mx-auto w-full flex-grow flex flex-col relative z-20 min-h-0">
+                <div className="text-center mb-2 flex-shrink-0">
+                    <h2 className="text-blue-400 font-bold tracking-[0.3em] uppercase mb-1 text-xs md:text-sm font-mono opacity-80">System_Arsenal</h2>
+                    <h1 className="text-4xl md:text-6xl font-black text-white mb-2 leading-none tracking-tighter uppercase">
+                        Core <span className="italic font-serif text-blue-500 lowercase first-letter:uppercase">Competencies</span>
                     </h1>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 flex-grow min-h-0">
-                    {skills.map((skillGroup) => (
-                        <div
-                            key={skillGroup.category}
-                            className="glass-panel p-8 md:p-12 rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-2xl hover:bg-white/10 transition-all duration-700 group flex flex-col h-auto md:h-full relative overflow-hidden"
-                            style={{ animationDelay: skillGroup.delay }}
-                        >
-                            {/* Background Glow */}
-                            <div className={`absolute top-0 right-0 p-32 bg-gradient-to-br ${skillGroup.color} opacity-10 blur-[100px] rounded-full pointer-events-none group-hover:opacity-20 transition-opacity duration-700`}></div>
-
-                            <div className="relative z-10 flex flex-col h-auto md:h-full md:min-h-0">
-                                <div className="mb-8">
-                                    <h3 className={`text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r ${skillGroup.color} bg-clip-text text-transparent`}>
-                                        {skillGroup.category}
-                                    </h3>
-                                    <p className="text-lg text-slate-400 font-source leading-relaxed max-w-md">
-                                        {skillGroup.description}
-                                    </p>
-                                </div>
-
-                                <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
-                                    <div className="flex flex-wrap gap-3 content-start">
-                                        {skillGroup.items.map((item, i) => (
-                                            <span
-                                                key={item}
-                                                className="px-5 py-2.5 rounded-full bg-slate-900/40 border border-white/5 text-slate-300 font-medium text-sm md:text-base group-hover:border-white/20 group-hover:bg-white/5 group-hover:text-white transition-all duration-300 hover:scale-105 transform cursor-default"
-                                                style={{ transitionDelay: `${i * 30}ms` }}
-                                            >
-                                                {item}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Decorative Line */}
-                                <div className={`mt-8 h-1 w-24 bg-gradient-to-r ${skillGroup.color} rounded-full opacity-50 group-hover:w-full transition-all duration-1000 ease-out`}></div>
-                            </div>
-                        </div>
-                    ))}
+                <div className="flex-grow min-h-0 relative">
+                    <BrainNetwork allSkills={allSkills} />
                 </div>
             </div>
         </div>

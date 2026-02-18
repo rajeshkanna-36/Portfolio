@@ -16,6 +16,7 @@ export default {
         pacifico: ['Pacifico', 'cursive'],
         source: ['Source Sans Pro', 'sans-serif'],
         ubuntu: ['Ubuntu Mono', 'monospace'],
+        outfit: ['Outfit', 'sans-serif'],
       },
       keyframes: {
         'siri-rotate': {
