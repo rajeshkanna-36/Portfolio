@@ -6,9 +6,8 @@ const skills = [
         category: 'Full Stack Development',
         description: 'Building robust, scalable applications from front to back.',
         items: [
-            'React', 'TypeScript', 'Next.js', 'Vite', 'Tailwind CSS', 'Redux',
-            'Node.js', 'Express', 'Python', 'PostgreSQL', 'MongoDB', 'GraphQL',
-            'Git', 'Docker', 'AWS', 'CI/CD'
+            'Java', 'Python', 'C', 'Spring Boot', 'React', 'Node.js', 'Express',
+            'Redux', 'PostgreSQL', 'MongoDB', 'GraphQL', 'AWS', 'Docker', 'Git', 'CI/CD'
         ],
         theme: 'blue'
     },

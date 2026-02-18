@@ -1,9 +1,9 @@
 import { motion } from "motion/react";
 import {
-    FaReact, FaNodeJs, FaPython, FaDocker, FaAws, FaGitAlt, FaFigma, FaBrain
+    FaReact, FaNodeJs, FaPython, FaDocker, FaAws, FaGitAlt, FaFigma, FaBrain, FaJava
 } from "react-icons/fa";
 import {
-    SiTypescript, SiNextdotjs, SiTailwindcss, SiRedux, SiExpress,
+    SiTypescript, SiRedux, SiExpress, SiSpringboot, SiCplusplus,
     SiPostgresql, SiMongodb, SiGraphql, SiAdobexd, SiAdobecreativecloud
 } from "react-icons/si";
 import { MdDesignServices, MdCode, MdMonitor, MdCloud } from "react-icons/md";
@@ -37,9 +37,9 @@ const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
         const iconMap: Record<string, React.ElementType> = {
             'React': FaReact,
             'TypeScript': SiTypescript,
-            'Next.js': SiNextdotjs,
-            'Vite': FaReact,
-            'Tailwind CSS': SiTailwindcss,
+            'Java': FaJava,
+            'C': SiCplusplus,
+            'Spring Boot': SiSpringboot,
             'Redux': SiRedux,
             'Node.js': FaNodeJs,
             'Express': SiExpress,
@@ -222,13 +222,25 @@ const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
                     onMouseLeave={() => setHoveredNode(null)}
                 >
                     <div
-                        className={`relative w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center border transition-all duration-300 backdrop-blur-md
+                        className={`relative w-14 h-14 md:w-20 md:h-20 rounded-3xl flex items-center justify-center border transition-all duration-500
                         ${hoveredNode === node.id
-                                ? `border-white bg-${node.side === 'left' ? 'blue' : 'purple'}-600/20 shadow-[0_0_20px_${node.color}] scale-110`
-                                : 'border-white/10 bg-slate-800/60 hover:border-white/30'
-                            }`}
+                                ? `border-white/50 scale-125 z-50`
+                                : 'border-white/10 scale-100'
+                            }
+                        `}
+                        style={{
+                            background: node.side === 'left'
+                                ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' // Blue gradient
+                                : 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)', // Purple gradient
+                            boxShadow: hoveredNode === node.id
+                                ? `0 0 50px ${node.color}, inset 0 0 20px rgba(255,255,255,0.5)`
+                                : `0 10px 30px -10px ${node.color}, inset 0 0 10px rgba(255,255,255,0.2)`
+                        }}
                     >
-                        <node.icon className={`text-xl md:text-3xl transition-colors duration-300 ${hoveredNode === node.id ? 'text-white' : (node.side === 'left' ? 'text-blue-400' : 'text-purple-400')}`} />
+                        {/* Glossy top reflection */}
+                        <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent rounded-t-3xl pointer-events-none" />
+
+                        <node.icon className="relative z-10 text-2xl md:text-4xl text-white drop-shadow-md" />
                     </div>
 
                     {/* Label - visible on hover or always for better UX? Let's keep it visible but subtle */}
