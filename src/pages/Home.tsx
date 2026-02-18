@@ -49,7 +49,7 @@ const Home = () => {
 
             <div className="max-w-4xl w-full text-center animate-fade-in-up relative z-10">
                 {/* Hero Section */}
-                <div className="mb-8 relative z-10 mt-[-5vh]"> {/* Moved up slightly to balance with lowered horizon */}
+                <div className="mb-8 relative z-10">
                     <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-white mb-6 font-outfit leading-tight">
                         Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 animate-gradient-x pb-2 font-extrabold block md:inline mt-2 md:mt-0">Rajesh Kanna</span> <span className="inline-block animate-wave origin-bottom-right">👋</span>
                     </h1>
