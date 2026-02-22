@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 
 const projects = [
     {
@@ -34,161 +35,214 @@ const projects = [
     },
 ];
 
+// Gap between stacked card tops
+const STACK_OFFSET = 24;
+const NAVBAR_HEIGHT = 88;
+
 const Projects = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const overlayRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const rafRef = useRef<number>(0);
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (!containerRef.current) return;
+        const onScroll = () => {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = requestAnimationFrame(() => {
+                cardRefs.current.forEach((card, index) => {
+                    if (!card) return;
+                    const overlay = overlayRefs.current[index];
+                    const nextCard = cardRefs.current[index + 1];
 
-            cardRefs.current.forEach((card, index) => {
-                if (!card) return;
-                const nextCard = cardRefs.current[index + 1];
-                if (nextCard) {
-                    const rect = card.getBoundingClientRect();
-                    const nextRect = nextCard.getBoundingClientRect();
-                    const nextCardTop = nextRect.top;
-                    const dist = nextCardTop - rect.top;
-                    const height = card.clientHeight;
-
-                    if (dist < height) {
-                        const progress = 1 - (dist / height);
-                        const targetScale = 1 - (progress * 0.05);
-                        const targetOpacity = 1 - (progress * 0.3);
-                        const targetBlur = progress * 10;
-
-                        card.style.transform = `scale(${Math.max(0.9, targetScale)})`;
-                        card.style.filter = `blur(${targetBlur}px) brightness(${targetOpacity})`;
-                    } else {
-                        card.style.transform = 'scale(1)';
-                        card.style.filter = 'none';
+                    if (!nextCard) {
+                        // Last card — never dim
+                        card.style.transform = 'scale(1) translateY(0px)';
+                        if (overlay) overlay.style.opacity = '0';
+                        return;
                     }
-                }
+
+                    const cardRect = card.getBoundingClientRect();
+                    const nextRect = nextCard.getBoundingClientRect();
+
+                    // How far has the next card overlapped this card?
+                    const overlap = cardRect.bottom - nextRect.top;
+                    const cardHeight = card.offsetHeight;
+
+                    if (overlap <= 0) {
+                        // Not yet overlapping — fully visible
+                        card.style.transform = 'scale(1)';
+                        if (overlay) overlay.style.opacity = '0';
+                    } else {
+                        // progress: 0 (just touching) → 1 (next card top = this card top)
+                        const progress = Math.min(1, overlap / cardHeight);
+                        const scale = 1 - progress * 0.04;   // 1 → 0.96
+                        const scrim = progress * 0.55;        // 0 → 0.55 dark overlay
+
+                        card.style.transform = `scale(${scale})`;
+                        if (overlay) overlay.style.opacity = `${scrim}`;
+                    }
+                });
             });
         };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll(); // initial pass
+        return () => {
+            window.removeEventListener('scroll', onScroll);
+            cancelAnimationFrame(rafRef.current);
+        };
     }, []);
 
     return (
-        <div ref={containerRef} className="pt-24 min-h-screen bg-[#05060b] text-gray-100 p-8 px-4 sm:px-6 lg:px-8 relative font-outfit">
-            {/* Background Layers */}
-            <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
-                {/* Visual Grid */}
-                <div className="absolute inset-0 opacity-[0.08]"
+        <div className="pt-24 min-h-screen text-gray-100 relative font-outfit"
+            style={{ background: '#05060b' }}>
+
+            {/* Fixed background — stays behind everything */}
+            <div className="fixed inset-0 pointer-events-none select-none z-0">
+                {/* Grid */}
+                <div className="absolute inset-0 opacity-[0.06]"
                     style={{
-                        backgroundImage: `linear-gradient(to right, #3b82f6 1px, transparent 1px), linear-gradient(to bottom, #3b82f6 1px, transparent 1px)`,
+                        backgroundImage: `linear-gradient(to right, #3b82f6 1px, transparent 1px),
+                                          linear-gradient(to bottom, #3b82f6 1px, transparent 1px)`,
                         backgroundSize: '120px 120px'
                     }}
                 />
-
-                {/* Ambient Glows */}
-                <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-blue-500/15 blur-[120px] rounded-full" />
-                <div className="absolute bottom-1/4 -right-20 w-[600px] h-[600px] bg-cyan-500/10 blur-[120px] rounded-full" />
-
-                {/* Cyber Scan Line */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-400/5 to-transparent h-[500px] w-full animate-scan pointer-events-none" />
+                {/* Ambient glows */}
+                <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-blue-500/10 blur-[120px] rounded-full" />
+                <div className="absolute bottom-1/4 -right-20 w-[600px] h-[600px] bg-cyan-500/8 blur-[120px] rounded-full" />
             </div>
 
-            <div className="max-w-6xl mx-auto mb-24 relative z-10">
-                <div className="text-center mb-20">
-                    <h2 className="text-blue-500 font-bold tracking-wider uppercase mb-4 text-sm font-mono opacity-80">My Work</h2>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+                {/* Header */}
+                <div className="text-center mb-24">
+                    <p className="text-blue-500 font-bold tracking-wider uppercase mb-4 text-sm font-mono opacity-80">
+                        My Work
+                    </p>
                     <h1 className="text-4xl md:text-6xl font-black font-outfit text-white mb-6 tracking-tighter uppercase leading-none">
                         Designs That Blend <br />
-                        <span className="italic font-serif text-blue-500 lowercase first-letter:uppercase">Creativity</span> &amp; Functionality
+                        <span className="italic font-serif text-blue-500 lowercase first-letter:uppercase">
+                            Creativity
+                        </span>{' '}
+                        &amp; Functionality
                     </h1>
                 </div>
 
-                <div className="flex flex-col gap-12 relative">
+                {/* Stacked Cards */}
+                <div className="relative pb-24">
                     {projects.map((project, index) => (
                         <div
                             key={project.id}
                             ref={el => { cardRefs.current[index] = el; }}
-                            className={`sticky transition-all duration-500 ease-out`}
+                            className="sticky"
                             style={{
-                                top: `${120 + (index * 20)}px`,
-                                marginBottom: `${index === projects.length - 1 ? '100px' : '0px'}`,
-                                zIndex: index + 1
+                                top: `${NAVBAR_HEIGHT + index * STACK_OFFSET}px`,
+                                zIndex: index + 1,
+                                transformOrigin: 'top center',
+                                willChange: 'transform',
                             }}
                         >
-                            <div className="glass-panel rounded-[2rem] p-8 md:p-12 border border-white/10 shadow-2xl overflow-hidden relative group bg-black/40 backdrop-blur-3xl">
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                            {/* Card */}
+                            <div className="relative rounded-[2rem] overflow-hidden border border-white/[0.08] shadow-2xl"
+                                style={{
+                                    background: 'linear-gradient(145deg, rgba(15,17,26,0.97) 0%, rgba(8,10,18,0.99) 100%)',
+                                    boxShadow: '0 30px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)',
+                                }}>
+
+                                {/* Card content */}
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center p-10 md:p-16 relative z-10">
+                                    {/* Left */}
                                     <div className="space-y-8">
-                                        <div className="border border-white/20 rounded-full px-4 py-1 w-fit text-sm font-medium bg-white/5 backdrop-blur-md text-gray-400">
+                                        <div className="border border-white/15 rounded-full px-4 py-1.5 w-fit text-sm font-medium bg-white/5 text-gray-400 font-mono">
                                             {String(index + 1).padStart(2, '0')}
                                         </div>
 
                                         <div className="space-y-4">
-                                            <div className="text-blue-500 font-mono text-sm tracking-widest uppercase">{project.year} • {project.category}</div>
-                                            <h3 className="text-4xl md:text-5xl font-bold font-outfit text-white group-hover:text-blue-500 transition-colors">
+                                            <div className="text-blue-500 font-mono text-xs tracking-widest uppercase">
+                                                {project.year} • {project.category}
+                                            </div>
+                                            <h3 className="text-5xl md:text-6xl font-bold font-outfit text-white leading-tight">
                                                 {project.title}
                                             </h3>
-                                            <p className="text-lg text-gray-400 leading-relaxed max-w-md font-outfit">
+                                            <p className="text-lg text-gray-400 leading-relaxed max-w-lg font-outfit">
                                                 {project.description}
                                             </p>
                                         </div>
 
                                         {project.link.startsWith('http') ? (
-                                            <a
+                                            <motion.a
                                                 href={project.link}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 font-bold hover:scale-105 transition-transform duration-300"
+                                                className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-gray-900 text-sm font-bold tracking-wide overflow-hidden"
+                                                whileHover={{ scale: 1.04 }}
+                                                whileTap={{ scale: 0.96 }}
+                                                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                                             >
-                                                VIEW PROJECT
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                            </a>
+                                                {/* Shimmer sweep */}
+                                                <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-in-out bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                                                <span className="relative z-10">VIEW PROJECT</span>
+                                                {/* Arrow slide effect */}
+                                                <span className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
+                                                    <svg className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-[140%]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                    </svg>
+                                                    <svg className="w-4 h-4 flex-shrink-0 absolute -translate-x-[140%] transition-transform duration-300 group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                    </svg>
+                                                </span>
+                                            </motion.a>
                                         ) : (
-                                            <Link
-                                                to={project.link}
-                                                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 font-bold hover:scale-105 transition-transform duration-300"
+                                            <motion.div
+                                                whileHover={{ scale: 1.04 }}
+                                                whileTap={{ scale: 0.96 }}
+                                                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                                             >
-                                                VIEW PROJECT
-                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                            </Link>
+                                                <Link
+                                                    to={project.link}
+                                                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-gray-900 text-sm font-bold tracking-wide overflow-hidden"
+                                                >
+                                                    {/* Shimmer sweep */}
+                                                    <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-in-out bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                                                    <span className="relative z-10">VIEW PROJECT</span>
+                                                    {/* Arrow slide effect */}
+                                                    <span className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
+                                                        <svg className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-[140%]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                        </svg>
+                                                        <svg className="w-4 h-4 flex-shrink-0 absolute -translate-x-[140%] transition-transform duration-300 group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                        </svg>
+                                                    </span>
+                                                </Link>
+                                            </motion.div>
                                         )}
                                     </div>
 
-                                    <div className="relative h-[300px] lg:h-[400px] w-full rounded-2xl overflow-hidden shadow-inner group-hover:shadow-2xl transition-all duration-500">
+                                    {/* Right — image */}
+                                    <div className="relative h-[320px] lg:h-[480px] w-full rounded-2xl overflow-hidden">
                                         <img
                                             src={project.image}
                                             alt={project.title}
-                                            className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                            loading="lazy"
                                         />
-                                        <div className={`absolute inset-0 opacity-20 bg-gradient-to-br ${project.color} mix-blend-overlay`}></div>
-                                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300"></div>
-
-                                        <div className="absolute bottom-6 right-6 p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                                            <div className="flex gap-2">
-                                                <div className="w-3 h-3 rounded-full bg-white/50"></div>
-                                                <div className="w-3 h-3 rounded-full bg-white/50"></div>
-                                                <div className="w-3 h-3 rounded-full bg-white"></div>
-                                            </div>
-                                        </div>
+                                        {/* Color tint overlay */}
+                                        <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-10 mix-blend-overlay`} />
+                                        {/* Bottom fade */}
+                                        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent" />
                                     </div>
                                 </div>
+
+                                {/* Dark scrim overlay — controlled by scroll (NO blur, just darkness) */}
+                                <div
+                                    ref={el => { overlayRefs.current[index] = el; }}
+                                    className="absolute inset-0 rounded-[2rem] bg-[#05060b] pointer-events-none z-20"
+                                    style={{ opacity: 0, transition: 'opacity 0.05s linear' }}
+                                />
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-
-            <style>{`
-                @keyframes scan {
-                    0% { transform: translateY(-100%); opacity: 0; }
-                    50% { opacity: 0.2; }
-                    100% { transform: translateY(100vh); opacity: 0; }
-                }
-                .animate-scan {
-                    animation: scan 15s linear infinite;
-                }
-                .glass-panel {
-                    backdrop-filter: blur(40px) saturate(200%);
-                    -webkit-backdrop-filter: blur(40px) saturate(200%);
-                }
-            `}</style>
         </div>
     );
 };
