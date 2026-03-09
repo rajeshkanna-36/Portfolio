@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 
 const CalculatorApp = () => {
@@ -47,3 +48,4 @@ const CalculatorApp = () => {
 };
 
 export default CalculatorApp;
+

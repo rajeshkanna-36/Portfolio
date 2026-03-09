@@ -1,3 +1,4 @@
+'use client';
 "use client";
 
 import type { TargetAndTransition } from "motion/react";
@@ -249,3 +250,4 @@ function AppleHelloEnglishEffect({
 }
 
 export { AppleHelloEnglishEffect, AppleHelloVietnameseEffect };
+

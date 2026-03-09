@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom';
+'use client';
+import Link from 'next/link';
 import { motion } from 'motion/react';
 import SocialLinks from '../components/SocialLinks';
+import { useLoader } from '../components/LoaderContext';
 
 const easing = 'easeOut' as const;
 
-const Home = ({ isVisible = true }: { isVisible?: boolean }) => {
+const Home = () => {
+    const isVisible = useLoader();
     const makeAnim = (delay: number) => ({
         initial: { opacity: 0, y: 36 },
         animate: isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 },
@@ -96,7 +99,7 @@ const Home = ({ isVisible = true }: { isVisible?: boolean }) => {
                             <span>Resume</span>
                         </a>
                         <Link
-                            to="/projects"
+                            href="/projects"
                             className="px-8 py-3 glass-btn text-blue-400 font-outfit font-bold rounded-full group"
                         >
                             <span>View Projects</span>

@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 
 const WeatherApp = () => {
@@ -62,3 +63,4 @@ const WeatherApp = () => {
 };
 
 export default WeatherApp;
+

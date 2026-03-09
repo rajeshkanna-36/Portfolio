@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { AppleHelloEnglishEffect } from "@/components/ncdai/apple-hello-effect";
@@ -29,3 +30,4 @@ const HelloLoader = ({ onComplete }: { onComplete: () => void }) => {
 };
 
 export default HelloLoader;
+

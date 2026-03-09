@@ -1,3 +1,4 @@
+'use client';
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FaGraduationCap, FaBriefcase, FaMicrochip } from 'react-icons/fa';
@@ -257,3 +258,4 @@ const About = () => {
 };
 
 export default About;
+

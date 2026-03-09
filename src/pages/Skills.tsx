@@ -1,3 +1,4 @@
+'use client';
 import { useRef } from 'react';
 import BrainNetwork from '../components/BrainNetwork';
 
@@ -80,3 +81,4 @@ const Skills = () => {
 };
 
 export default Skills;
+

@@ -1,3 +1,4 @@
+'use client';
 import { motion } from "motion/react";
 import {
     FaReact, FaNodeJs, FaPython, FaDocker, FaAws, FaGitAlt, FaFigma, FaBrain, FaJava
@@ -7,7 +8,7 @@ import {
     SiPostgresql, SiMongodb, SiGraphql, SiAdobexd, SiAdobecreativecloud
 } from "react-icons/si";
 import { MdDesignServices, MdCode, MdMonitor, MdCloud } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface SkillItem {
     name: string;
@@ -22,56 +23,56 @@ interface SkillNode {
     y: number;
     side: 'left' | 'right';
     color: string;
+    yDuration: number;
 }
 
 interface BrainNetworkProps {
     allSkills: SkillItem[];
 }
 
+// Map skill names to icons
+const getIcon = (name: string) => {
+    const iconMap: Record<string, React.ElementType> = {
+        'React': FaReact,
+        'TypeScript': SiTypescript,
+        'Java': FaJava,
+        'C': SiCplusplus,
+        'Spring Boot': SiSpringboot,
+        'Redux': SiRedux,
+        'Node.js': FaNodeJs,
+        'Express': SiExpress,
+        'Python': FaPython,
+        'PostgreSQL': SiPostgresql,
+        'MongoDB': SiMongodb,
+        'GraphQL': SiGraphql,
+        'Git': FaGitAlt,
+        'Docker': FaDocker,
+        'AWS': FaAws,
+        'Figma': FaFigma,
+        'Adobe XD': SiAdobexd,
+        'Prototyping': MdDesignServices,
+        'Wireframing': MdDesignServices,
+        'User Research': MdMonitor,
+        'Interaction Design': MdMonitor,
+        'Visual Hierarchy': MdDesignServices,
+        'Color Theory': SiAdobecreativecloud,
+        'Typography': MdCode,
+        'Responsive Design': MdMonitor,
+        'Accessibility': MdCode,
+        'Motion Design': MdDesignServices,
+        'CI/CD': MdCloud
+    };
+    return iconMap[name] || MdCode;
+};
+
+// Memoize center coordinates
+const centerX = 50; // Percentage
+const centerY = 40; // Shifted slightly DOWN from previous position (35)
+
 const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
-    const [nodes, setNodes] = useState<SkillNode[]>([]);
     const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
-    // Map skill names to icons
-    const getIcon = (name: string) => {
-        const iconMap: Record<string, React.ElementType> = {
-            'React': FaReact,
-            'TypeScript': SiTypescript,
-            'Java': FaJava,
-            'C': SiCplusplus,
-            'Spring Boot': SiSpringboot,
-            'Redux': SiRedux,
-            'Node.js': FaNodeJs,
-            'Express': SiExpress,
-            'Python': FaPython,
-            'PostgreSQL': SiPostgresql,
-            'MongoDB': SiMongodb,
-            'GraphQL': SiGraphql,
-            'Git': FaGitAlt,
-            'Docker': FaDocker,
-            'AWS': FaAws,
-            'Figma': FaFigma,
-            'Adobe XD': SiAdobexd,
-            'Prototyping': MdDesignServices,
-            'Wireframing': MdDesignServices,
-            'User Research': MdMonitor,
-            'Interaction Design': MdMonitor,
-            'Visual Hierarchy': MdDesignServices,
-            'Color Theory': SiAdobecreativecloud,
-            'Typography': MdCode,
-            'Responsive Design': MdMonitor,
-            'Accessibility': MdCode,
-            'Motion Design': MdDesignServices,
-            'CI/CD': MdCloud
-        };
-        return iconMap[name] || MdCode;
-    };
-
-    // Memoize center coordinates
-    const centerX = 50; // Percentage
-    const centerY = 40; // Shifted slightly DOWN from previous position (35)
-
-    useEffect(() => {
+    const nodes = useMemo(() => {
         // Split skills into left and right groups
         // Assuming 'Full Stack Development' maps to left (Logic) and anything else (UI/UX) maps to right
         // Limit to top 5 skills per side as requested by user
@@ -103,7 +104,8 @@ const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
                     x: Math.max(5, Math.min(95, x)), // Clamp to safe area
                     y: Math.max(10, Math.min(90, y)),
                     side: side,
-                    color: side === 'left' ? '#3b82f6' : '#a855f7' // Blue vs Purple
+                    color: side === 'left' ? '#3b82f6' : '#a855f7', // Blue vs Purple
+                    yDuration: 3 + Math.random() // Generate stable random duration for floating effect
                 } as SkillNode;
             });
         };
@@ -111,7 +113,7 @@ const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
         const leftNodes = generateSideNodes(leftSkills, 'left');
         const rightNodes = generateSideNodes(rightSkills, 'right');
 
-        setNodes([...leftNodes, ...rightNodes]);
+        return [...leftNodes, ...rightNodes];
     }, [allSkills]);
 
     return (
@@ -216,7 +218,7 @@ const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
                     animate={{ scale: 1, opacity: 1, y: ["-50%", "-45%", "-50%"] }} // Floating effect (relative to base y)
                     transition={{
                         delay: i * 0.05,
-                        y: { duration: 3 + Math.random(), repeat: Infinity, ease: "easeInOut" }
+                        y: { duration: node.yDuration, repeat: Infinity, ease: "easeInOut" }
                     }}
                     onMouseEnter={() => setHoveredNode(node.id)}
                     onMouseLeave={() => setHoveredNode(null)}
@@ -257,3 +259,4 @@ const BrainNetwork = ({ allSkills }: BrainNetworkProps) => {
 };
 
 export default BrainNetwork;
+

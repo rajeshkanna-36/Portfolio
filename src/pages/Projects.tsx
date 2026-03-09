@@ -1,6 +1,10 @@
+'use client';
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'motion/react';
+import project1 from '../assets/project1.png';
+import project2 from '../assets/project2.png';
+import project3 from '../assets/project3.png';
 
 const projects = [
     {
@@ -11,7 +15,7 @@ const projects = [
         year: '2025',
         link: 'https://www.figma.com/proto/R1YF9zrvpyDoIA7u7RYexb/KodeX-Web-Design?node-id=104-2&t=Bas4TS4aCwqSRh17-1',
         color: 'from-blue-400 to-cyan-300',
-        image: (await import('../assets/project1.png')).default,
+        image: project1.src,
     },
     {
         id: 2,
@@ -21,7 +25,7 @@ const projects = [
         year: '2024',
         link: 'https://www.figma.com/proto/wPk0H1HLvb9n0REKpGxcMw/Swayam?node-id=16-39&t=Bas4TS4aCwqSRh17-1',
         color: 'from-emerald-400 to-teal-300',
-        image: (await import('../assets/project2.png')).default,
+        image: project2.src,
     },
     {
         id: 3,
@@ -31,7 +35,7 @@ const projects = [
         year: '2025',
         link: 'https://atuomobile-brand-shop.web.app/Login',
         color: 'from-purple-400 to-pink-300',
-        image: (await import('../assets/project3.png')).default,
+        image: project3.src,
     },
 ];
 
@@ -197,7 +201,7 @@ const Projects = () => {
                                                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                                             >
                                                 <Link
-                                                    to={project.link}
+                                                    href={project.link}
                                                     className="group relative inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-gray-900 text-sm font-bold tracking-wide overflow-hidden"
                                                 >
                                                     {/* Shimmer sweep */}

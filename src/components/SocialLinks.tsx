@@ -1,3 +1,4 @@
+'use client';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { SiLeetcode } from 'react-icons/si';
 
@@ -30,3 +31,4 @@ const SocialLinks = () => {
 };
 
 export default SocialLinks;
+

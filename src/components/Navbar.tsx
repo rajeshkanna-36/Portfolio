@@ -1,11 +1,14 @@
+'use client';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-    const location = useLocation();
+    const pathname = usePathname() || '/';
 
     const links = [
         { name: 'Home', path: '/' },
@@ -14,7 +17,7 @@ const Navbar = () => {
         { name: 'About', path: '/about' },
     ];
 
-    const isActive = (path: string) => location.pathname === path;
+    const isActive = (path: string) => pathname === path;
 
     return (
         <nav className="fixed w-full z-40">
@@ -23,8 +26,8 @@ const Navbar = () => {
 
                     {/* Logo */}
                     <div className="flex-shrink-0 flex-1">
-                        <Link to="/" className="inline-block hover:scale-105 transition-transform">
-                            <img src="/logo.svg" alt="RK Logo" className="h-12 w-auto hover:brightness-110 transition-all" />
+                        <Link href="/" className="inline-block hover:scale-105 transition-transform">
+                            <Image src="/logo.svg" alt="RK Logo" width={48} height={48} className="h-12 w-auto hover:brightness-110 transition-all" />
                         </Link>
                     </div>
 
@@ -38,7 +41,7 @@ const Navbar = () => {
                             {links.map((link) => (
                                 <Link
                                     key={link.name}
-                                    to={link.path}
+                                    href={link.path}
                                     onMouseEnter={() => setHoveredLink(link.name)}
                                     onMouseLeave={() => setHoveredLink(null)}
                                     className="relative px-6 py-2.5 text-sm font-karla font-bold rounded-full transition-colors duration-150 select-none"
@@ -130,7 +133,7 @@ const Navbar = () => {
                                 {links.map((link) => (
                                     <Link
                                         key={link.name}
-                                        to={link.path}
+                                        href={link.path}
                                         onClick={() => setIsOpen(false)}
                                         className={`relative block px-6 py-4 text-lg font-karla font-bold rounded-2xl transition-all duration-300 ${isActive(link.path)
                                             ? 'text-white bg-blue-600'
