@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import project1 from '../assets/project1.png';
 import project2 from '../assets/project2.png';
 import project3 from '../assets/project3.png';
+import project4 from '../assets/project4.png';
 
 const projects = [
     {
@@ -36,6 +37,16 @@ const projects = [
         link: 'https://atuomobile-brand-shop.web.app/Login',
         color: 'from-purple-400 to-pink-300',
         image: project3.src,
+    },
+    {
+        id: 4,
+        title: 'Internal Bug Tracking System',
+        category: 'Full Stack • SaaS',
+        description: 'An internal bug tracking system inspired by Jira — featuring sprint boards, RBAC, markdown-rich issue management, and real-time filtering across teams.',
+        year: '2026',
+        link: 'https://internal-bug-tracking-system.vercel.app',
+        color: 'from-violet-400 to-fuchsia-300',
+        image: project4.src,
     },
 ];
 
